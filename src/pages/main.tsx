@@ -3,6 +3,8 @@ import axios from 'axios';
 import UseSWR from 'swr';
 import Cards from '../components/Cards';
 import { ITweet } from '../interfaces';
+import CreateTweet from '../components/main/CreateTweet';
+import Header from '../components/common/Header';
 
 const Main: FC = () => {
   const fetcher = async (url: string) => {
@@ -13,14 +15,20 @@ const Main: FC = () => {
       console.log(error);
     }
   };
-  const { data, error } = UseSWR<ITweet[]>(
+  const { data, error, mutate } = UseSWR<ITweet[]>(
     `${process.env.REACT_APP_BACK_URL}/tweets`,
     fetcher,
   );
 
   if (!data) return <div>loading...</div>;
   if (error) return <div>error</div>;
-  return <Cards tweets={data} />;
+  return (
+    <>
+      <Header title="HOME" />
+      <CreateTweet mutate={mutate}></CreateTweet>
+      <Cards tweets={data} />;
+    </>
+  );
 };
 
 export default Main;
