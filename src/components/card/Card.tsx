@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import { ITweet } from '../interfaces';
-import ProfileIcon from './ProfileIcon';
+// import { ITweet } from '../interfaces';
+// import ProfileIcon from './ProfileIcon';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/ko';
@@ -10,11 +10,20 @@ import {
   faHeart as farHeart,
 } from '@fortawesome/free-regular-svg-icons';
 import { faRetweet, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import Like from './Like';
+import { ITweet } from '../../interfaces';
+import ProfileIcon from '../ProfileIcon';
+import Ellipsis from './Ellipsis';
+import { MutatorCallback } from 'swr/dist/types';
 
 interface CardProps {
   tweet: ITweet;
+  mutate: (
+    data?: ITweet[] | Promise<ITweet[]> | MutatorCallback<ITweet[]> | undefined,
+    shouldRevalidate?: boolean | undefined,
+  ) => Promise<ITweet[] | undefined>;
 }
-const Card: FC<CardProps> = ({ tweet }) => {
+const Card: FC<CardProps> = ({ tweet, mutate }) => {
   dayjs.extend(relativeTime);
   return (
     <li className="flex border-b-1">
@@ -32,16 +41,12 @@ const Card: FC<CardProps> = ({ tweet }) => {
             <FontAwesomeIcon icon={farComment} />
             <span>123</span>
           </div>
-          <div className="w-full">
-            <FontAwesomeIcon icon={farHeart} />
-            <span>123</span>
-          </div>
+          <Like tweet={tweet} />
+          <Ellipsis tweet={tweet} mutate={mutate} />
+
           <div className="w-full">
             <FontAwesomeIcon icon={faRetweet} />
             <span className="ml-2">123</span>
-          </div>
-          <div className="w-full">
-            <FontAwesomeIcon icon={faEllipsisH} />
           </div>
         </div>
       </div>

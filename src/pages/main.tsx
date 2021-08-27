@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import axios from 'axios';
 import UseSWR from 'swr';
-import Cards from '../components/Cards';
+import Cards from '../components/card/Cards';
 import { ITweet } from '../interfaces';
 import CreateTweet from '../components/main/CreateTweet';
 import Header from '../components/common/Header';
@@ -26,7 +26,7 @@ const Main: FC = () => {
     <>
       <Header title="HOME" />
       <CreateTweet mutate={mutate}></CreateTweet>
-      <Cards tweets={data} />;
+      <Cards tweets={data} mutate={mutate} />;
     </>
   );
 };
